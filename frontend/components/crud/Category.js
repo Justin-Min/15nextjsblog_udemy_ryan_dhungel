@@ -93,7 +93,8 @@ const Category = () => {
   }
 
   const showSuccess = () => {
-    if (success) return <p className='text-success'>Category is created.</p>
+    if (success)
+      return <p className='text-success bold'>Category is created.</p>
   }
 
   const showError = () => {
