@@ -24,6 +24,9 @@ const CreateBlog = ({ router }) => {
   const [categories, setCategories] = useState([])
   const [tags, setTags] = useState([])
 
+  const [checked, setChecked] = useState([]) // categories
+  const [checkedTag, setCheckedTag] = useState([]) // tags
+
   const [body, setBody] = useState(blogFormLS())
   const [values, setValues] = useState({
     error: '',
@@ -83,12 +86,30 @@ const CreateBlog = ({ router }) => {
       localStorage.setItem('blog', JSON.stringify(e))
   }
 
+  const handleToggle = c => () => {
+    setValues({ ...values, error: '' })
+    // return the first index or -1
+    const clickedCategory = checked.indexOf(c)
+    const all = [...checked]
+
+    if (clickedCategory === -1) all.push(c)
+    else all.splice(clickedCategory, 1)
+
+    console.log(all)
+    setChecked(all)
+    formData.set('categories', all)
+  }
+
   const showCategories = () => {
     return (
       categories &&
       categories.map((c, i) => (
         <li key={i} className='list-unstyled'>
-          <input type='checkbox' className='mr-2' />
+          <input
+            onChange={handleToggle(c._id)}
+            type='checkbox'
+            className='mr-2'
+          />
           <label className='form-check-label'>{c.name}</label>
         </li>
       ))
@@ -155,12 +176,16 @@ const CreateBlog = ({ router }) => {
           <div>
             <h5>Categories</h5>
             <hr />
-            {showCategories()}
+            <ul style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+              {showCategories()}
+            </ul>
           </div>
           <div>
             <h5>Tags</h5>
             <hr />
-            {showTags()}
+            <ul style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+              {showTags()}
+            </ul>
           </div>
         </div>
       </div>
