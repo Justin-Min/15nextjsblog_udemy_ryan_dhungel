@@ -10,7 +10,6 @@ import { createBlog } from '../../actions/blog'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 import '../../node_modules/react-quill/dist/quill.snow.css'
-import { INITIAL_CSS_LOAD_ERROR } from 'next/dist/client/page-loader'
 
 const CreateBlog = ({ router }) => {
   const blogFormLS = () => {
@@ -118,7 +117,8 @@ const CreateBlog = ({ router }) => {
   const handleTagsToggle = t => () => {
     setValues({ ...values, error: '' })
     // return the first index or -1
-    const clickedTag = checked.indexOf(t)
+    const clickedTag = checkedTag.indexOf(t)
+    console.log(checkedTag.indexOf(t))
     const all = [...checkedTag]
 
     if (clickedTag === -1) all.push(t)
