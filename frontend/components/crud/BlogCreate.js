@@ -68,7 +68,7 @@ const CreateBlog = ({ router }) => {
 
   const publishBlog = e => {
     e.preventDefault()
-    // console.log('ready to publishBlog')
+    console.log(...formData)
     createBlog(formData, token).then(data => {
       if (data.error) setValues({ ...values, error: data.error })
       else {
@@ -118,7 +118,6 @@ const CreateBlog = ({ router }) => {
     setValues({ ...values, error: '' })
     // return the first index or -1
     const clickedTag = checkedTag.indexOf(t)
-    console.log(checkedTag.indexOf(t))
     const all = [...checkedTag]
 
     if (clickedTag === -1) all.push(t)
