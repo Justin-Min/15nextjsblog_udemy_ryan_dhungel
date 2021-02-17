@@ -32,12 +32,7 @@ const Blogs = ({ blogs, categories, tags, size }) => {
             <div className='col-md-4'>image</div>
             <div className='col-md-8'>
               <section>
-                <div className='pb-3'>{blog.excerpt}</div>
-                <div>
-                  {renderHTML(
-                    "<a class='github' href='https://github.com'><b>GitHub</b></a>"
-                  )}
-                </div>
+                <div className='pb-3'>{renderHTML(blog.excerpt)}</div>
                 <Link href={`/blogs/${blog.slug}`}>
                   <a className='btn btn-primary pt-2'>Read more</a>
                 </Link>
@@ -66,8 +61,7 @@ const Blogs = ({ blogs, categories, tags, size }) => {
         </div>
         <div className='container-fluid'>
           <div className='row'>
-            <div className='col-md-12'>show all blogs</div>
-            <div>{showAllBlogs()}</div>
+            <div className='col-md-12'>{showAllBlogs()}</div>
           </div>
         </div>
       </main>
