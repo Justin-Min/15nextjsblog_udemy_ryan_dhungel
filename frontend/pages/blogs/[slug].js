@@ -7,7 +7,29 @@ import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config'
 import renderHTML from 'react-render-html'
 import moment from 'moment'
 
-const SingleBlog = ({ blog }) => {
+const SingleBlog = ({ blog, query }) => {
+  const head = () => (
+    <Head>
+      <title>
+        {blog.title} | {APP_NAME}
+      </title>
+      <meta name='description' content={blog.mdesc} />
+      <link rel='canonical' href={`${DOMAIN}/blogs/${query.slug}`} />
+      <meta property='og:title' content={`${blog.title} | ${APP_NAME}`} />
+      <meta property='og:description' content={blog.mdesc} />
+      <meta property='og:type' content='website' />
+      <meta property='og:url' content={`${DOMAIN}/blogs/${query.slug}`} />
+      <meta property='og:site_name' content={`${APP_NAME}`} />
+      <meta property='og:image' content={`${API}/blog/photo/${blog.slug}`} />
+      <meta
+        property='og:image:secure_url'
+        content={`${API}/blog/photo/${blog.slug}`}
+      />
+      <meta property='og:image:type' content='image/png' />
+      <meta property='fb_app_id' content={`${FB_APP_ID}`} />
+    </Head>
+  )
+
   const showBlogCategories = blog =>
     blog.categories.map((c, i) => (
       <Link key={i} href={`/categories/${c.slug}`}>
@@ -24,6 +46,7 @@ const SingleBlog = ({ blog }) => {
 
   return (
     <>
+      {head()}
       <Layout>
         <main>
           <article>
@@ -38,15 +61,20 @@ const SingleBlog = ({ blog }) => {
                 </div>
               </section>
               <section>
-                <p className='lead mt-3 mark'>
-                  Written by {blog.postedBy.name} | Published{' '}
-                  {moment(blog.updatedAt).fromNow()}
-                </p>
-                <div className='pb-3'>
-                  {showBlogCategories(blog)}
-                  {showBlogTags(blog)}
-                  <br />
-                  <br />
+                <div className='container'>
+                  <h1 className='display-2 pb-3 text-center font-weight-bold'>
+                    {blog.title}
+                  </h1>
+                  <p className='lead mt-3 mark'>
+                    Written by {blog.postedBy.name} | Published{' '}
+                    {moment(blog.updatedAt).fromNow()}
+                  </p>
+                  <div className='pb-3'>
+                    {showBlogCategories(blog)}
+                    {showBlogTags(blog)}
+                    <br />
+                    <br />
+                  </div>
                 </div>
               </section>
             </div>
@@ -73,7 +101,7 @@ const SingleBlog = ({ blog }) => {
 SingleBlog.getInitialProps = ({ query }) => {
   return singleBlog(query.slug).then(data => {
     if (data.error) console.log(data.error)
-    else return { blog: data }
+    else return { blog: data, query }
   })
 }
 
