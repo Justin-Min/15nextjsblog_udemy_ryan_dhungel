@@ -1,13 +1,30 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '../../components/Layout'
-import { useState } from 'react'
-import { singleBlog } from '../../actions/blog'
+import { useEffect, useState } from 'react'
+import { singleBlog, listRelated } from '../../actions/blog'
 import { API, DOMAIN, APP_NAME, FB_APP_ID } from '../../config'
 import renderHTML from 'react-render-html'
 import moment from 'moment'
+import SmallCard from '../../components/blog/SmallCard'
 
 const SingleBlog = ({ blog, query }) => {
+  const [related, setRelated] = useState([])
+
+  const loadRelated = () => {
+    listRelated({ blog }).then(data => {
+      if (data.error) console.log(data.error)
+      else {
+        console.log('Related Blogs : ', data)
+        setRelated(data)
+      }
+    })
+  }
+
+  useEffect(() => {
+    loadRelated()
+  }, [])
+
   const head = () => (
     <Head>
       <title>
@@ -44,6 +61,16 @@ const SingleBlog = ({ blog, query }) => {
       </Link>
     ))
 
+  const showRelatedBlog = () => {
+    return related.map((blog, i) => (
+      <div className='col-md-4' key={i}>
+        <article>
+          <SmallCard blog={blog} />
+        </article>
+      </div>
+    ))
+  }
+
   return (
     <>
       {head()}
@@ -62,7 +89,7 @@ const SingleBlog = ({ blog, query }) => {
               </section>
               <section>
                 <div className='container'>
-                  <h1 className='display-2 pb-3 text-center font-weight-bold'>
+                  <h1 className='display-2 pb-3 pt-3 text-center font-weight-bold'>
                     {blog.title}
                   </h1>
                   <p className='lead mt-3 mark'>
@@ -86,7 +113,7 @@ const SingleBlog = ({ blog, query }) => {
             <div className='container pb-5'>
               <h4 className='text-center pt-5 pb-5 h2'>Related blogs</h4>
               <hr />
-              <p>show related blogs</p>
+              {showRelatedBlog()}
             </div>
             <div className='container pb-5'>
               <p>show comments</p>
