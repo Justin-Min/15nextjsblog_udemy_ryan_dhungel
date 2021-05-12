@@ -14,10 +14,7 @@ const SingleBlog = ({ blog, query }) => {
   const loadRelated = () => {
     listRelated({ blog }).then(data => {
       if (data.error) console.log(data.error)
-      else {
-        console.log('Related Blogs : ', data)
-        setRelated(data)
-      }
+      else setRelated(data)
     })
   }
 
@@ -113,7 +110,7 @@ const SingleBlog = ({ blog, query }) => {
             <div className='container pb-5'>
               <h4 className='text-center pt-5 pb-5 h2'>Related blogs</h4>
               <hr />
-              {showRelatedBlog()}
+              <div className='row'>{showRelatedBlog()}</div>
             </div>
             <div className='container pb-5'>
               <p>show comments</p>
